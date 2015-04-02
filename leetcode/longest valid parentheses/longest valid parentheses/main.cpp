@@ -37,7 +37,8 @@ public:
             }
         }
     }
-};int main(int argc, const char * argv[]) {
+};
+int main(int argc, const char * argv[]) {
     vector<int>temp;
     vector<vector<int>>v;
     temp.push_back(1);
