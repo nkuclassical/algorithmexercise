@@ -1,0 +1,19 @@
+package tree;
+
+public class PopulatingNextRightPointersinEachNode {
+	public void connect(TreeLinkNode root) {
+		if(root==null)return;
+		TreeLinkNode le=root.left;
+		TreeLinkNode ri=root.right;
+		while(le!=null){
+			le.next=ri;
+			le=le.right;
+			ri=ri.left;
+		}
+		connect(root.left);
+		connect(root.right);
+
+	}
+
+
+}
