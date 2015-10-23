@@ -40,8 +40,8 @@ public class RandomQueue<Item> implements Iterable<Item> {
 		
 	}
 	public Item dequeue(){
-		shuffle();
 		if(size()==0)throw new RuntimeException("Randomized queue underflow!");
+		shuffle();
 		Item ret=items[N];
 		N--;
 		if(N>0&&N==items.length/4){
@@ -51,6 +51,7 @@ public class RandomQueue<Item> implements Iterable<Item> {
 	}
 	
 	public Item sample(){
+		if(size()==0)throw new RuntimeException("Randomized queue underflow!");
 		shuffle();
 		return items[N];
 	}
