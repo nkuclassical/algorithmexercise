@@ -4,52 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestoreIPAddress {
-	List<String> ret = new ArrayList();
-
 	public List<String> restoreIpAddresses(String s) {
-		helper(s, "", 4);
+		List<String> ret = new ArrayList();
+		if (s.length() > 12)
+			return ret;
+		helper(ret, new ArrayList<String>(), s);
 		return ret;
 	}
 
-	public void helper(String successor, String prefix, int left) {
-		if (successor.length() == 0 && left == 0) {
-			ret.add(new String(prefix));
-			return;
-		} else if (left == 0)
-			return;
-		else {
-			// int newip=0;
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < 3 && i < successor.length(); i++) {
-				// newip=newip*10+Integer.valueOf(successor.charAt(i)-'0');
-				sb.append(successor.charAt(i));
-				if (sb.length() > 1 && sb.charAt(0) != '0') {
-					if (Integer.valueOf(sb.toString()) < 256) {
-						if (prefix.length() == 0) {
-							helper(successor.substring(i + 1), sb.toString(),
-									left - 1);
-						} else
-							helper(successor.substring(i + 1), new String(
-									prefix + "." + sb.toString()), left - 1);
-					} else
-						break;
-				} else if (sb.length() == 1) {
-					if (prefix.length() == 0) {
-						helper(successor.substring(i + 1), sb.toString(),
-								left - 1);
-					} else
-						helper(successor.substring(i + 1), new String(prefix
-								+ "." + sb.toString()), left - 1);
-				} else
-					break;
+	public void helper(List<String> ret, List<String> prefix, String s) {
+		StringBuilder sb = new StringBuilder();
+		if (prefix.size() == 4) {
+			if (s.length() == 0) {
+				for (int i = 0; i < prefix.size() - 1; i++) {
+					sb.append(prefix.get(i) + ".");
+				}
+				sb.append(prefix.get(prefix.size() - 1));
+				ret.add(sb.toString());
+			}
+		} else {
+			for (int i = 0; i < s.length(); i++) {
+				sb.append(s.charAt(i));
+				if (getValue(sb.toString()) < 256) {
+					if (sb.length() > 1 && sb.charAt(0) == '0')
+						return;
+					prefix.add(sb.toString());
+					helper(ret, prefix, s.substring(i + 1));
+					prefix.remove(prefix.size() - 1);
+				} else {
+					return;
+				}
 			}
 		}
 	}
 
+	public int getValue(String s) {
+		return Integer.valueOf(s);
+	}
+
 	public static void main(String[] args) {
 		RestoreIPAddress test = new RestoreIPAddress();
-//		String input = "25525511135";
-		 String input="010010";
+		String input = "010010";
 		List<String> result = test.restoreIpAddresses(input);
 		for (String r : result) {
 			System.out.println(r);
