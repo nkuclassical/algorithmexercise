@@ -27,15 +27,16 @@ public class MergekSortedLists {
 		return ret.next;
 	}
 
-	public ListNode mergek(ListNode[] lists, int start, int end) {
-		if (start == end)
+	public ListNode divide(ListNode[] lists, int start, int end) {
+		if(end<start)return null;
+        else if (start == end)
 			return lists[start];
 		else if (start == end - 1)
 			return merge(lists[start], lists[end]);
 		else {
 			int mid = (start + end) / 2;
-			ListNode l1 = mergek(lists, start, mid);
-			ListNode l2 = mergek(lists, mid + 1, end);
+			ListNode l1 = divide(lists, start, mid);
+			ListNode l2 = divide(lists, mid + 1, end);
 			return merge(l1, l2);
 		}
 	}
@@ -44,7 +45,7 @@ public class MergekSortedLists {
 		if (lists.length == 0)
 			return null;
 		ListNode l1 = lists[0];
-		return mergek(lists, 0, lists.length - 1);
+		return divide(lists, 0, lists.length - 1);
 	}
 
 	public static void main(String[] args) {
