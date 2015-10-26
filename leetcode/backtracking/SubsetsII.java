@@ -8,22 +8,23 @@ import java.util.Stack;
 public class SubsetsII {
 	public List<List<Integer>> subsetsWithDup(int[] nums) {
 		List<List<Integer>> ret = new ArrayList();
+		if (nums.length == 0)
+			return ret;
 		Arrays.sort(nums);
-		helper(ret, new Stack(), nums, 0);
+		helper(ret, new ArrayList(), nums, 0);
 		return ret;
 	}
 
-	public void helper(List<List<Integer>> ret, Stack<Integer> prefix,
-			int[] nums, int index) {
-		if (index <= nums.length) {
-			ret.add(new ArrayList(prefix));
-		}
-		for (int i = index; i < nums.length; i++) {
-			prefix.push(nums[i]);
+	public void helper(List<List<Integer>> ret, List<Integer> prefix,
+			int[] nums, int pos) {
+		ret.add(new ArrayList(prefix));
+		for (int i = pos; i < nums.length; i++) {
+			prefix.add(nums[i]);
 			helper(ret, prefix, nums, i + 1);
-			prefix.pop();
-			while (i < nums.length - 1 && nums[i + 1] == nums[i])
+			prefix.remove(prefix.size() - 1);
+			while (i + 1 < nums.length && nums[i + 1] == nums[i]) {
 				i++;
+			}
 		}
 	}
 
