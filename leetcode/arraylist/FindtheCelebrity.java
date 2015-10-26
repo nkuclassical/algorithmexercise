@@ -17,46 +17,15 @@ public class FindtheCelebrity {
 	};
 		
 	
-	public int findCelebrity(int n) {
-	    boolean heknowothers,othersknowhim;
-	    for(int i=0;i<n;i++){
-	    	System.out.println(i+" "+n);
-	    	heknowothers=false;
-	    	othersknowhim=true;
-	    	for(int j=0;j<i;j++){
-	    		if(!knows(j,i)){
-	    			othersknowhim=false;
-	    			break;
-	    		}
-	    		if(knows(i,j)){
-	    			heknowothers=true;
-	    			break;
-	    		}
-	    	}
-	    	if(heknowothers==true||othersknowhim==false)continue;
-	    	for(int j=i+1;j<n;j++){
-	    		if(!knows(j,i)){
-	    			othersknowhim=false;
-	    			break;
-	    		}
-	    		if(knows(i,j)){
-	    			heknowothers=true;
-	    			break;
-	    		}
-	    	}
-	    	if(heknowothers==false&&othersknowhim==true)return i;
-	    }
-	    return -1;
-	}
 	
-	public int findCelebrity2(int n) { //O(n)
+	
+	public int findCelebrity(int n) { //O(n)
         int candidate=0;
         for(int i=0;i<n;i++){
             if(!knows(i,candidate)){
                 candidate=i;
             }
         }
-        
         for(int i=0;i<n;i++){
             if(i==candidate)continue;
             if(knows(candidate,i)||!knows(i,candidate)){
