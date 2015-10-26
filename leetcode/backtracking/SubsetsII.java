@@ -30,10 +30,13 @@ public class SubsetsII {
 
 	public static void main(String[] args) {
 		SubsetsII test = new SubsetsII();
-		int[] nums = new int[3];
+		int[] nums = new int[6];
 		nums[0] = 1;
 		nums[1] = 2;
-		nums[2] = 2;
+		nums[2] = 3;
+		nums[3] = 9;
+		nums[4] = 8;
+		nums[5] = 8;
 		List<List<Integer>> result = test.subsetsWithDup(nums);
 		for (List<Integer> rt : result) {
 			for (Integer r : rt) {
