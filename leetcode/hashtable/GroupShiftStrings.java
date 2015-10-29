@@ -9,33 +9,29 @@ import java.util.Map.Entry;
 
 public class GroupShiftStrings {
 	public List<List<String>> groupStrings(String[] strings) {
-		List<List<String>> ret = new ArrayList();
 		HashMap<String, List<String>> map = new HashMap();
-		for (String str : strings) {
-			if (str.length() == 0)
+		List<List<String>> ret = new ArrayList();
+		for (String string : strings) {
+			if (string == null || string.length() == 0)
 				continue;
-			else {
-				String temp = "";
-				int offset = str.charAt(0) - 'a';
-				for (int i = 0; i < str.length(); i++) {
-					char c = (char) (str.charAt(i) - offset);
-					if (c < 'a')
-						c += 26;
-					temp += c;
+			int offset = string.charAt(0) - 'a';
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < string.length(); i++) {
+				char c = (char) (string.charAt(i) - offset);
+				if (c < 'a') {
+					c = (char) (c + 26);
 				}
-				if (map.containsKey(temp)) {
-					map.get(temp).add(str);
-				} else {
-					List<String> list = new ArrayList();
-					map.put(temp, list);
-					map.get(temp).add(str);
-				}
+				sb.append(c);
 			}
+			if (!map.containsKey(sb.toString())) {
+				map.put(sb.toString(), new ArrayList<String>());
+			}
+			map.get(sb.toString()).add(string);
 		}
 		for (Entry<String, List<String>> entry : map.entrySet()) {
-			List<String> l = entry.getValue();
-			Collections.sort(l);
-			ret.add(l);
+			List<String> value = entry.getValue();
+			Collections.sort(value);
+			ret.add(value);
 		}
 		return ret;
 	}
