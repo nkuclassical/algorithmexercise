@@ -27,11 +27,11 @@ public class GroupAnagrams {
 		return ret;
 	}
 
-	public String process(String s){
-        char[]c=s.toCharArray();
-        Arrays.sort(c);
-        return new String(c);
-    }
+	public String process(String s) {
+		char[] c = s.toCharArray();
+		Arrays.sort(c);
+		return new String(c);
+	}
 
 	public static void main(String[] args) {
 		GroupAnagrams test = new GroupAnagrams();
