@@ -1,6 +1,6 @@
 # algorithmexercise
 Coding is fun, especially dealing with algorithm.
-Here are my solution to solving partial challenges from
+Here are my solutions to solving partial challenges from
 - Leetcode
 - Hackerrank
 - ProjectEular
