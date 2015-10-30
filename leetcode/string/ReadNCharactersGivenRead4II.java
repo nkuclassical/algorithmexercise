@@ -4,32 +4,43 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ReadNCharactersGivenRead4II {
-
-	Queue<Character> lastLeft = new LinkedList();
-
-	public int read4(char[] buf) {
-		String t = "ab";
-		buf = t.toCharArray();
-		return 2;
+	/**
+	 * function read4 isn't part of my code, just as simulation of an API
+	 * 
+	 * @param buffer
+	 * @return
+	 */
+	public int read4(char[] buffer) {
+		return 0;
 	}
-	private int bufferPrevious=0;
-	private int bufferCurrent=0;
-	private char[]buffer=new char[4];
+
+	char[] buffer = new char[4];
+	int bufoffset = 0;
+	int buffercur = 0;
+	int buffersize = 0;
+
 	public int read(char[] buf, int n) {
-		int ptr=0;
-		while(ptr<n){
-			if(bufferPrevious==0){
-				bufferCurrent=read4(buffer);
-			}
-			if(bufferCurrent==0)break;
-			while(ptr<n&&bufferPrevious<bufferCurrent){
-				buf[ptr++]=buffer[bufferPrevious++];
-			}
-			if(bufferPrevious>=bufferCurrent)bufferPrevious=0;
-				
-			
+		int bufcur = 0;
+		while (buffercur < buffersize) {
+			if (bufcur < n) {
+				buf[bufoffset + bufcur++] = buffer[buffercur++];
+			} else
+				return bufcur;
 		}
-		return ptr;
+		while (true) {
+			int r = read4(buffer);
+			for (int i = 0; i < r; i++) {
+				if (bufcur < n)
+					buf[bufoffset + bufcur++] = buffer[i];
+				else {
+					buffercur = i;
+					buffersize = r;
+					return bufcur;
+				}
+			}
+			if (r < 4)
+				return bufcur;
+		}
 	}
 
 	public static void main(String[] args) {
