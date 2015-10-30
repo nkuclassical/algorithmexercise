@@ -5,7 +5,7 @@ Here are my solutions to solving partial challenges from
 - Hackerrank
 - ProjectEular
 
-And I also realize design my own data structure(though they already exist)
+And I also realize design my own data structure(though they are already exist)
 is essential for a professional software developement engineer. They are:
 - HashMap
 - Queue
