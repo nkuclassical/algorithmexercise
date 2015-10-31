@@ -4,16 +4,19 @@ import java.util.Set;
 
 public class WordBreak {
 	public boolean wordBreak(String s, Set<String> wordDict) {
-		boolean []dp=new boolean[s.length()];
-		for(int i=0;i<s.length();i++){
-			for(int j=0;j<i;j++){
-				String sub=s.substring(j,i+1);
-				if(wordDict.contains(sub)&&(j==0||dp[j-1])){
-					dp[i]=true;
-					break;
+		boolean[] match = new boolean[s.length() + 1];
+		match[0] = true;
+		for (int i = 0; i < s.length(); i++) {
+			for (int j = i; j >= 0; j--) {
+				String sub = s.substring(j, i + 1);
+				if (wordDict.contains(sub)) {
+					if (match[j]) {
+						match[i + 1] = true;
+						break;
+					}
 				}
 			}
 		}
-		return dp[s.length()-1];
+		return match[s.length()];
 	}
 }
