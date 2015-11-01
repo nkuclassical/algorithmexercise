@@ -7,61 +7,81 @@ import java.util.Queue;
 import java.util.Set;
 
 public class WordLadder {
-	public int ladderLength(String beginWord, String endWord,
-			Set<String> wordList) {
-		Queue<String> queue = new LinkedList();
-		HashMap<String, Integer> map = new HashMap();
-		queue.add(beginWord);
-		map.put(beginWord, 1);
-		while (!queue.isEmpty()) {
-			String curWord = queue.poll();
-			int curTime = map.get(curWord);
-			for (int i = 0; i < curWord.length(); i++) {
-				for (char j = 'a'; j <= 'z'; j++) {
-					if (j == curWord.charAt(i))
-						continue;
-					StringBuilder newWord = new StringBuilder(curWord);
-					newWord.setCharAt(i, j);
-					if (newWord.toString().equals(endWord))
-						return curTime + 1;
-					if (wordList.contains(newWord.toString())
-							&& !map.containsKey(newWord.toString())) {
-						map.put(newWord.toString(), curTime + 1);
-						queue.add(newWord.toString());
-					}
-				}
-			}
-		}
-		return 0;
-	}
 
+	int ret;
 	public int ladderLength2(String beginWord, String endWord,
-			Set<String> wordList) {
-		Queue<String> q = new LinkedList();
-		HashMap<String, Integer> map = new HashMap();
-		q.add(beginWord);
-		map.put(beginWord, 1);
-		while (!q.isEmpty()) {
-			String s = q.poll();
+			Set<String> wordList) { // Time Limited Exceeded
+		if (beginWord.length() == 0)
+			return 0;
+		ret = wordList.size() + 1;
+		HashSet<String> visited = new HashSet();
+		helper(new StringBuilder(beginWord), endWord, wordList, 1, visited);
+		if (ret == wordList.size() + 1)
+			return 0;
+		else
+			return ret;
+	}
 
-			for (int i = 0; i < s.length(); i++) {
-				for (char j = 'a'; j <= 'z'; j++) {
-					StringBuilder cur = new StringBuilder(s);
-					cur.setCharAt(i, (char) j);
-//					if (cur.toString().equals(s))
-//						continue;
-					if (cur.toString().equals(endWord))
-						return map.get(s) + 1;
-					if (wordList.contains(cur.toString())
-							&& !map.containsKey(cur.toString())) {
-						map.put(cur.toString(), map.get(s) + 1);
-						q.add(cur.toString());
+	public void helper(StringBuilder beginWord, String endWord,
+			Set<String> wordList, int curstep, Set<String> visited) {
+		for (int i = 0; i < beginWord.length(); i++) {
+			char beginc = beginWord.charAt(i);
+			for (char c = 'a'; c <= 'z'; c++) {
+				if (c == beginc)
+					continue;
+				else {
+					beginWord.setCharAt(i, c);
+					if (beginWord.toString().equals(endWord)) {
+						if (ret > curstep + 1)
+							ret = curstep + 1;
 					}
+					if (wordList.contains(beginWord.toString())) {
+
+						if (!visited.contains(beginWord.toString())) {
+							visited.add(beginWord.toString());
+							helper(beginWord, endWord, wordList, curstep + 1,
+									visited);
+							visited.remove(beginWord.toString());
+						}
+
+					}
+					beginWord.setCharAt(i, beginc);
 				}
 			}
 		}
+	}
+
+	public int ladderLength(String beginWord, String endWord,
+			Set<String> wordList) { // Accepted! 93ms
+		if (beginWord.equals(endWord))
+			return 1;
+		Queue<String> q = new LinkedList();
+		q.add(beginWord);
+		int len = beginWord.length();
+		int level = 2;
+		wordList.remove(beginWord);
+		while (!q.isEmpty()) {
+			int size = q.size();
+			for (int k = 0; k < size; k++) {
+				String s = q.poll();
+				for (int i = 0; i < len; i++) {
+					char[] c = s.toCharArray();
+					for (char j = 'a'; j <= 'z'; j++) {
+						c[i] = j;
+						String cur = new String(c);
+						if (cur.equals(endWord))
+							return level;
+						if (wordList.remove(cur)) {
+							q.add(cur);
+						}
+					}
+				}
+			}
+			level++;
+		}
 		return 0;
 	}
+	
 
 	public static void main(String[] args) {
 		WordLadder test = new WordLadder();
@@ -71,6 +91,6 @@ public class WordLadder {
 		w.add("dog");
 		w.add("lot");
 		w.add("log");
-		System.out.println(test.ladderLength2("hit", "cog", w));
+		System.out.println(test.ladderLength("hit", "cog", w));
 	}
 }
