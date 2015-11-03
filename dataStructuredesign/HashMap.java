@@ -108,6 +108,12 @@ public class HashMap<K, V> {
 		return get(key) != null;
 	}
 
+	public void clear(){
+		this.size=0;
+		for(int i=0;i<table.length;i++){
+			table[i]=null;
+		}
+	}
 	public boolean remove(K key) {
 		if (key == null)
 			return false;
@@ -141,51 +147,67 @@ public class HashMap<K, V> {
 	}
 
 	public void resize() {
-		int newcapacity = this.capacity << 1;
-		Entry<K, V>[] newtable = new Entry[newcapacity];
+		int oldcapacity=this.capacity;
+		this.capacity <<= 1;
+		
+		Entry<K, V>[] newtable = new Entry[capacity];
 		for (int i = 0; i < table.length; i++) {
 			if (table[i] != null) {
 				boolean odd = true;
 				Entry<K, V> curEntry = table[i];
-				Entry<K, V> newEntry = newtable[i + this.capacity];
+				Entry<K, V> loEntry = newtable[i];
+				Entry<K, V> hiEntry = newtable[i+oldcapacity];
 				Entry<K, V> previous = null;
 				while (curEntry != null) {
-					if (odd) {
-						if (newEntry == null) {
+					int hash=hash(curEntry.key);
+					if (hash==i) {
+						if (loEntry == null) {
 							newtable[i] = curEntry;
+							loEntry=newtable[i];
 						} else {
-							newEntry.next = curEntry;
-							newEntry = newEntry.next;
+							loEntry.next = curEntry;
+							loEntry = loEntry.next;
 						}
 						previous = curEntry;
 						curEntry = curEntry.next;
 					} else {
 						Entry<K, V> nextEntry = curEntry.next;
-						if (newEntry == null) {
-							newtable[i + this.capacity] = curEntry;
-							previous.next = curEntry.next;
+						if (hiEntry == null) {
+							newtable[i + oldcapacity] = curEntry;
+							previous.next = nextEntry;
 						} else {
-							newEntry.next = curEntry;
-							newEntry = newEntry.next;
+							hiEntry.next = curEntry;
+							hiEntry = hiEntry.next;
 						}
 						curEntry = nextEntry;
 					}
-					odd = !odd;
 				}
 			}
 		}
 		this.table = newtable;
-		this.capacity = newcapacity;
+		
 	}
 
 	public static void main(String[] args) {
 		HashMap<Integer, Integer> map = new HashMap();
-		for (int i = 0; i < 100; i++) {
-			map.put(i, i);
-		}
-		for (int i = 0; i < 100; i++) {
-			System.out.println(i + "   " + map.get(i));
-		}
+//		for (int i = 0; i < 100; i++) {
+			map.put(3, 3);
+			map.put(11, 11);
+			map.put(15, 15);
+			map.put(7, 7);
+//			map.put(, 7);
+//			map.put(3, 7);
+//			map.put(3, 7);
+//		}
+//		for (int i = 0; i < 100; i++) {
+//			System.out.println(i + "   " + map.get(i));
+//		}
+		System.out.println(map.get(3));
+		System.out.println(map.get(11));
+		System.out.println(map.get(15));
+		System.out.println(map.get(7));
+		
+		
 
 	}
 }
